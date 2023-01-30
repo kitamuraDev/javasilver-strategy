@@ -1,0 +1,212 @@
+---
+title: "basic"
+description: "basic"
+---
+
+# 基本
+
+このセクションでは Java プログラミングにおける基本概念を説明しています。<br />
+試験の直前チェックなどに活用されることをお勧めします。
+
+## オーバーロード
+
+> 説明：引数リストが異なるメソッドやコンストラクタを複数定義すること
+
+- 引数リストとは、引数の `並び順`, `データ型`, `数` のこと
+- `戻り値`, `引数の変数名`, `アクセス修飾子` は引数リストには含まれないため注意が必要
+
+```java
+void method() {}
+void method(int number) {}
+void method(int number, String string) {}
+void method(String string, int number) {}
+```
+
+### オーバーロードの優先順位
+
+`完全一致` > `暗黙の型変換` > [^1]`Boxing` > `可変長引数`<br />
+
+```java
+public class Main {
+    public void method(int a) { System.out.println("method(int a)"); }         // 1（完全一致）
+    public void method(long a) { System.out.println("method(long a)"); }       // 2（暗黙の型変換）
+    public void method(Integer a) { System.out.println("method(Integer a)"); } // 3（Boxing）
+    public void method(int... a) { System.out.println("method(int... a)"); }   // 4（可変長引数）
+    public static void main(String[] args) {
+        new Main().method(555); // method(int a)
+    }
+}
+```
+
+## オーバーライド
+
+> 説明：子クラス内で、親クラスで定義しているメソッドと同じ名前でメソッドを再定義すること
+
+条件
+
+- アクセス修飾子は、親クラスと同じか、それより広い
+- 戻り値は、親クラスと同じか、その子クラス
+- メソッド名と引数リストは同じ
+- `final` がついていないこと
+
+注意点
+
+- インスタンスメソッドを static メソッドで再定義することはできない（その逆も不可）
+- 型パラメーターを変更することはできない
+
+```java showLineNumbers copy {8,10}
+class Super {
+    void methodA() { System.out.println("Super: methodA()"); }
+    static void methodB() { System.out.println("Super: methodB()"); }
+}
+
+class Sub extends Super {
+    void methodA() { System.out.println("Sub: methodA()"); }        // OK
+    static void methodA() { System.out.println("Sub: methodA()"); } // NG（インスタンスメソッドをstaticメソッドで再定義できない）
+    static void methodB() { System.out.println("Sub: methodB()"); } // OK
+    void methodB() { System.out.println("Sub: methodB()"); }        // NG（staticメソッドをインスタンスメソッドで再定義できない）
+}
+```
+
+```java showLineNumbers copy {8}
+class Super {
+    <T> Collection<T> foo(Collection<T> c) { return null; };
+}
+class Sub extends Super {
+    <T> Collection<T> foo(Collection<T> c) { return null; }; // OK
+    <T> List<T> foo(List<T> c) { return null; };             // OK（引数の型が異なるため問題ない）
+    <T> Collection<T> foo(Map c) { return null; };           // OK（引数の型が異なるため問題ない）
+    <T> List<T> foo(Collection<String> c) { return null; };  // NG（型パラメーターは変更できない）
+}
+```
+
+## コンストラクタ
+
+- 子クラスで親クラスのコンストラクタを呼び出していない場合、子クラスのコンストラクタには暗黙的に`super();`が追加される
+- そのため、親クラスに引数無しのコンストラクタが定義されていない場合は、明示的に親クラスのコンストラクタを呼ぶ必要がある
+
+コンパイルが通らないコード
+
+```java showLineNumbers copy
+class Super {
+  int number;
+  Super(int number) { this.number = number; } // スーパークラスのコンストラクタ定義
+}
+class Sub extends Super {
+  Sub() { System.out.println("Subコンストラクタ"); } // 6行目でコンパイルエラー発生
+}
+```
+
+解決策 ① - 明示的に親クラスのコンストラクタを呼ぶ
+
+```java showLineNumbers copy {7}
+class Super {
+  int number;
+  Super(int number) { this.number = number; } // スーパークラスのコンストラクタ定義
+}
+class Sub extends Super {
+  Sub() {
+    super(555); // 明示的に親クラスのコンストラクタを呼ぶ
+    System.out.println("Subコンストラクタ");
+  }
+}
+```
+
+解決策 ② - 引数なしのコンストラクタを親クラスに定義する
+
+```java showLineNumbers copy {3}
+class Super {
+  int number;
+  Super() {} // 引数なしのコンストラクタを親クラスに定義する
+  Super(int number) { this.number = number; } // スーパークラスのコンストラクタ定義
+}
+class Sub extends Super {
+  Sub() { System.out.println("Subコンストラクタ"); }
+}
+```
+
+## 実行順序について
+
+コンストラクタと static イニシャライザが絡む場合のプログラムの実行順序については以下の通り
+
+1. main メソッドがあるクラスの static イニシャライザ
+2. 親クラスの static イニシャライザ
+3. 子クラスの static イニシャライザ
+4. 親クラスのコンストラクタ
+5. 子クラスのコンストラクタ
+
+```java showLineNumbers copy {2,9-10,14-15}
+public class Main {
+    static { System.out.println("Main static block"); }  // 1
+    public static void main(String[] args) throws Exception {
+        new Sub();
+    }
+}
+
+class Super {
+    static { System.out.println("Super static block"); } // 2
+    Super() { System.out.println("Super constructor"); } // 4
+}
+
+class Sub extends Super {
+    static { System.out.println("Sub static block"); }   // 3
+    Sub() { System.out.println("Sub constructor"); }     // 5
+}
+```
+
+## String インスタンスの比較
+
+> Java の String クラスをインスタンス化する方法は 2 つあります。<br />
+> プール領域とは、グローバルなメモリ空間。ヒープ領域とは、ローカルなメモリ空間と言い換えると理解しやすいです。
+
+- `String str1 = "foo"` : プール領域に"foo"が生成され、str1 はそれを参照する
+- `String str2 = new String("foo")`: ヒープ領域に"foo"が生成され、str2 はそれを参照する
+
+1. "foo"はプール領域に生成され、pool1,pool2 共に同一のメモリを参照するため「true」となる
+
+```java showLineNumbers copy
+String pool1 = "foo";
+String pool2 = "foo";
+System.out.println(pool1 == pool2); // true
+```
+
+2. "foo"はそれぞれヒープ領域に生成され、メモリ参照値が異なり、「false」となる
+
+```java showLineNumbers copy
+String heep1 = new String("foo");
+String heep2 = new String("foo");
+System.out.println(heep1 == heep2); // false
+```
+
+3. こちらも 2 と同様に、メモリ参照値が異なり、「false」となる
+
+```java showLineNumbers copy
+String pool = "foo";
+String heep = new String("foo");
+System.out.println(pool == heep); // false
+```
+
+## String.intern()
+
+> プール領域を拡張するメソッド。String インスタンスの比較の文脈で出題される傾向が高いです。
+
+特徴
+
+- 同じ値がプール領域に存在する場合、その参照値を返す
+- 同じ値がプール領域に存在しない場合、プール領域にその値を生成し、そのメモリ参照値を返す
+
+```java showLineNumbers copy {3}
+String str1 = new String("foo");
+String str2 = "foo";
+String str3 = str1.intern(); // プール領域にはstr2で生成した"foo"が存在するため、str2が参照してる"foo"のメモリ参照値が返る
+
+System.out.println(str1 == str2); // false
+System.out.println(str1 == str3); // false
+System.out.println(str2 == str3); // true
+```
+
+<br />
+<br />
+<br />
+
+[^1]: Boxing とは、プリミティブ型をラッパークラスに自動的に変換する機能です

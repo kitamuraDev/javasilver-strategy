@@ -8,10 +8,10 @@ description: "java-programming-basic"
 ## main() メソッド
 
 main() メソッドでコンパイルエラーになるか、実行時エラーになるかの違いを説明します。<br />
-この手の問題は試験で 1 問出題されるかされないか程度の出題率ですが、うっかり落としてしまうひっかけ要素があるので注意が必要です。
+この手の問題は試験で 1 問出題されるかされないか程度の出題率ですが、うっかり落としてしまうひっかけ要素があるので注意が必要。
 
-- コンパイルエラー：`文法ミス`
-- 実行時エラー：`記述ミス`
+- コンパイルエラー：`文法ミス` ... コンパイル段階で見つかる致命的なミス
+- 実行時エラー：`記述ミス` ... コンパイルは通してくれるが、実行時に発覚するミス
 
 コンパイルエラー
 
@@ -34,4 +34,66 @@ public void main(String[] args) {}        // 【👎】 static忘れ
 ```java showLineNumbers copy /static public/, /String args[]/
 static public void main(String[] args) {} // public と static の位置が逆
 public static void main(String args[]) {} // [] が args の後置
+```
+
+## 型変換の間違いやすいポイント
+
+```java showLineNumbers copy
+double d1 = 10; // 【👍】 基本データ型同士は、暗黙の型変換ができる
+Double d2 = 10; // 【👎】 Boxingの関係ではない場合、暗黙の型変換はできない
+```
+
+\*[Boxing とは](http://localhost:3000/sample-code/basic#user-content-fn-1)
+
+## 識別子
+
+> 説明：変数,関数,メソッド,クラスなどを区別するために付ける名前
+
+- 1 文字目: `英字`,`$`, `_`
+- 2 文字目以降は数字の使用が可能
+- [予約語](https://www.javadrive.jp/start/const/index7.html)は使用できない
+- 文字数制限は無い
+
+## アンダースコア（`_`）について
+
+Java では識別子以外でアンダースコアを使用することができ、数値リテラル内で使用することがあります。<br />
+それは大きな数値を扱う際などに、アンダースコアで数値を区切り可読性を上げるためです。
+
+使用できない箇所
+
+- 先頭と末尾
+- 小数点の`前後`
+- F（or f）および、L（or l）の`前`
+- 0x（16 進数）と 0b（2 進数）の`前後`
+
+以下はすべてコンパイルエラー
+
+```java showLineNumbers copy
+float x1 = 3_.1415F;
+float x2 = 3._1415F;
+long x3 = 999_99_9999_L;
+int x4 = _38;
+int x5 = 38_;
+int x6 = 0x_48;
+int x7 = 0_x48;
+```
+
+## var（ローカル変数型推論）
+
+> 説明：var とは、ローカル変数型推論と呼ぶように、変数宣言時に、型を宣言しなくてもリテラルから型を推論してくれる機能。JDK10 から実装された。
+
+使用可能な箇所
+
+- ローカル変数の初期化時
+- 拡張 for 文内のインデックス
+- 通常 for 文内で宣言されたローカル変数
+
+サンプルコード
+
+```java showLineNumbers copy
+var a1 = new int[]{ 1, 2, 3 }; // 【👍】
+var a2 = new int[1];           // 【👍】
+var a3 = new int[];            // 【👎】 要素数が無い
+var a4 = { 1, 2, 3 };          // 【👎】 型の明示が無い
+var final a5 = 10;             // 【👎】 final と var の位置が逆
 ```

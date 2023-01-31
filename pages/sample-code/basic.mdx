@@ -157,12 +157,12 @@ class Sub extends Super {
 ## String インスタンスの比較
 
 > Java の String クラスをインスタンス化する方法は 2 つあります。<br />
-> プール領域とは、グローバルなメモリ空間。ヒープ領域とは、ローカルなメモリ空間と言い換えると理解しやすいです。
+> コンスタントプール領域とは、グローバルなメモリ空間。ヒープ領域とは、ローカルなメモリ空間と言い換えると理解しやすいです。
 
-- `String str1 = "foo"` : プール領域に"foo"が生成され、str1 はそれを参照する
+- `String str1 = "foo"` : コンスタントプール領域に"foo"が生成され、str1 はそれを参照する
 - `String str2 = new String("foo")`: ヒープ領域に"foo"が生成され、str2 はそれを参照する
 
-1. "foo"はプール領域に生成され、pool1,pool2 共に同一のメモリを参照するため「true」となる
+1. "foo"はコンスタントプール領域に生成され、pool1,pool2 共に同一のメモリを参照するため「true」となる
 
 ```java showLineNumbers copy
 String pool1 = "foo";
@@ -188,17 +188,17 @@ System.out.println(pool == heep); // false
 
 ## String.intern()
 
-> プール領域を拡張するメソッド。String インスタンスの比較の文脈で出題される傾向が高いです。
+> コンスタントプール領域を拡張するメソッド。String インスタンスの比較の文脈で出題される傾向が高いです。
 
 特徴
 
-- 同じ値がプール領域に存在する場合、その参照値を返す
-- 同じ値がプール領域に存在しない場合、プール領域にその値を生成し、そのメモリ参照値を返す
+- 同じ値がコンスタントプール領域に存在する場合、その参照値を返す
+- 同じ値がコンスタントプール領域に存在しない場合、コンスタントプール領域にその値を生成し、そのメモリ参照値を返す
 
 ```java showLineNumbers copy {3}
 String str1 = new String("foo");
 String str2 = "foo";
-String str3 = str1.intern(); // プール領域にはstr2で生成した"foo"が存在するため、str2が参照してる"foo"のメモリ参照値が返る
+String str3 = str1.intern(); // コンスタントコンスタントプール領域にはstr2で生成した"foo"が存在するため、str2が参照してる"foo"のメモリ参照値が返る
 
 System.out.println(str1 == str2); // false
 System.out.println(str1 == str3); // false

@@ -1,0 +1,105 @@
+---
+title: "operator-and-conditional-branch"
+description: "operator-and-conditional-branch"
+---
+
+# 2 章
+
+## 算術演算子の優先順位
+
+Java Silver では以下のような算術演算子の計算問題が出題されます。<br />
+左結合や演算子の優先順位の規則を理解していないと本番で落としてしまう恐れがあるため注意が必要。
+
+```java showLineNumbers copy
+System.out.println(2 + 8 / 4 + 2 * 6 / 2 + 4 + 2 / 2 * 10 + 12); // 36
+```
+
+解説
+
+1. 優先順位の高い演算子（`*`, `/`）から演算が行われる
+2. 演算結果は（2 + 2 + 6 + 4 + 10 + 12）となり、残りは左結合を行うだけとなる
+3. 最終演算結果は（36）となる
+
+## 暗黙の型変換とキャスト
+
+計算を行う際、`暗黙の型変換`と`キャスト`では計算結果が違うため注意が必要。
+
+```java showLineNumbers copy
+System.out.println(7/6);        // 1                 （暗黙の型変換）
+System.out.println((float)7/6); // 1.1666666         （キャスト）
+System.out.println(7/6.0);      // 1.1666666666666667（小数点を含む、暗黙の型変換）
+```
+
+## if 文の条件式
+
+if 文の条件式には変数の代入が可能なことを利用した問題が出題されることがあります。<br />
+以下のサンプルコード 3 行目の if 文の条件式では変数の代入が行われており、true が代入されるため条件式の評価は true 判定になります。
+
+```java showLineNumbers copy {3}
+public static void main(String[] args) {
+    boolean b1 = false; boolean b2 = true;
+    if (b1 = b2) {
+        System.out.println("foo"); // ← 出力されます
+    }
+}
+```
+
+## switch 文について
+
+特徴
+
+- 式に入るデータ型： `char(Character)`, `byte(Byte)`, `short(Short)`, `int(Integer)`, `enum`, `String`
+- 式の評価が null の場合、`コンパイルは通るが、NullPointerException`が発生する
+- case で指定する値は`定数`でなければならない
+
+コンパイルエラー
+
+```java showLineNumbers copy {5}
+int i1 = 1;
+int[] i2 = {2};
+final int i3 = 3;
+switch(i2[0]) {
+    case i1: // 【👎】 caseは定数でなければならない
+        break;
+    case 2:
+        break;
+    case i3:
+        break;
+}
+```
+
+実行時エラー
+
+```java showLineNumbers copy {2}
+String str = null;
+switch(str) { // 【👎】 実行時に NullPointerException 発生
+  case "foo":
+    break;
+  case "bar":
+    break;
+}
+```
+
+## String と StringBuilder の文字列操作
+
+特徴
+
+- String：書き換え不可
+- StringBuilder：書き換え可能
+
+String
+
+```java showLineNumbers copy {2}
+String str1 = "foo";
+String str2 = str1.concat(" bar"); // concat() で文字列連結するが、str1 には影響はない
+System.out.println(str2);          // foo bar
+System.out.println(str1);          // foo
+```
+
+StringBuilder
+
+```java showLineNumbers copy {2}
+StringBuilder str = new StringBuilder("foo");
+str.append(" bar");      // append() で文字列連結。
+System.out.println(str); // foo bar
+```

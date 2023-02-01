@@ -1,0 +1,152 @@
+---
+title: "class-and-object"
+description: "class-and-object"
+---
+
+# 4 章
+
+## 定数の初期化
+
+定数は明示的に初期化を行わなくてもコンパイルエラーにはなりません。その代わりにコンストラクタで初期化を行う必要があります。
+
+```java showLineNumbers copy {2-3}
+public class Main {
+  final int num; // 定数
+  Main(int init_num) { num = init_num; } // コンストラクタで初期化
+  public static void main(String[] args) {
+    System.out.println(new Main(555).num);
+  }
+}
+```
+
+## static 変数
+
+特徴
+
+- そのクラスで一箇所しか領域を持たない
+- インスタンス化不要（`クラス名.`で呼び出せる）
+- static メソッドからインスタンス変数やインスタンスメソッドにアクセスする場合にはインスタンス化が必要
+
+```java showLineNumbers copy {5,8}
+public class Main {
+  public int instanceValue = 100;
+
+  static int getInstanceValue_1() {
+    return instanceValue;           // 【👎】 インスタンス化しなければならない
+  }
+  static int getInstanceValue_2() { // 【👍】
+    return new Main().instanceValue;
+  }
+  public static void main(String[] args) throws Exception {
+    System.out.println(getInstanceValue_2());            // 100
+    System.out.println(new Main().getInstanceValue_2()); // 100（一応、インスタンスからでも呼び出せる）
+  }
+}
+```
+
+## static とポリモフィズム
+
+static メンバはポリモフィズムの影響を受けません。`参照型`を注視する<br />
+インスタンスメンバはポリモフィズムの影響を受けるため混同しないように注意する。
+
+```java showLineNumbers copy
+public class Main {
+  public static void main(String[] args) throws Exception {
+    Super[] obj = { new Super(), new Sub() };
+    for(Super o : obj) {
+      System.out.println(o.str); // 参照型はSuperだから、Super が出力される
+      o.say();                   // 参照型はSuperだから、say super が出力される
+      o.hello();                 // hello() はインスタンスメソッドのため、ポリモフィズムの挙動を取る
+    }
+  }
+}
+class Super {
+  static String str = "Super";
+  static void say() { System.out.println("say super"); }
+  void hello() { System.out.println("hello super"); }
+}
+class Sub extends Super {
+  static String str = "Sub";
+  static void say() { System.out.println("say sub"); }
+  void hello() { System.out.println("hello sub"); }
+}
+```
+
+## static メソッド と this
+
+static メソッド内では`this`は使用できないので注意が必要。
+
+```java showLineNumbers copy /this.s;/
+public class Main {
+  static String s;
+  Main(String s) { this.s = s; }
+
+  static String getS() { return this.s; } // 【👎】 staticメソッド内ではthisは使用できない
+  String getS() { return this.s; }        // 【👍】
+  public static void main(String[] args) throws Exception {
+    System.out.println(new Main("foo").getS());
+  }
+}
+```
+
+## メンバ間アクセス
+
+- 【👍】`インスタンスメンバ` -> `インスタンスメンバ`
+- 【👍】`static メンバ` -> `static メンバ`
+- 【👍】`インスタンスメンバ` -> `static メンバ`
+- 【👎】`static メンバ` -> `インスタンスメンバ`（インスタンス化しなければならない）
+- 「クラス名.メソッド名」形式でのメソッド呼び出し
+  - 【👍】static メンバ
+  - 【👎】インスタンスメンバ（インスタンス化しなければならない）
+
+サンプルコード
+
+```java showLineNumbers copy
+public class Main {
+  static void methodA() {
+    methodB();      // 【👍】 staticメソッド -> staticメソッド
+    Main.methodB(); // 【👍】 staticメソッド -> staticメソッド
+    methodC();      // 【👎】 インスタンス化しなければならない
+    Main.methodD(); // 【👎】 インスタンス化しなければならない
+  }
+
+  static void methodB() {}
+
+  void methodC() {
+    methodB();      // 【👍】 インスタンスメソッド -> staticメソッド
+    Main.methodB(); // 【👍】 インスタンスメソッド -> staticメソッド
+    methodD();      // 【👍】 インスタンスメソッド -> インスタンスメソッド
+    Main.methodD(); // 【👎】 無効なメソッド呼び出し（new Main().methodD(); なら👍）
+  }
+
+  void methodD() {}
+}
+```
+
+## ガベージコレクタ
+
+> 説明：Java オブジェクトに対するメモリ領域の割り当てや解放を JVM が自動的に行うこと。<br /> `どこからも参照されなくなったタイミングでガベージコレクタの対象になる`
+
+オブジェクトへの参照を取り除く方法
+
+- null を代入
+- 参照変数を他のオブジェクトに割り当てる
+
+```java showLineNumbers copy
+public class Main {
+  private String ref;
+  private void fnX(String s) { ref = s; };
+  public void fnY() {
+    String str = new String();
+    fnX(str);           // 1
+    str = new String(); // 2
+    fnX(null);          // 3
+  }
+}
+```
+
+解説
+
+1. 5 行目の`new String();` は、ref からも参照される
+2. str に新しく作成したオブジェクトを割り当て、参照先を切り替える
+3. null を ref に代入することで、5 行目の`new String();` は、どこからも参照されなくなる。ここではじめて GC の対象になる

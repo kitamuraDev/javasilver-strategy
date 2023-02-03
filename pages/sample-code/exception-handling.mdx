@@ -1,0 +1,138 @@
+---
+title: "exception-handling"
+description: "exception-handling"
+---
+
+# 6 章
+
+## catch ブロック
+
+特徴
+
+- catch ブロックは複数定義することができる
+- 例外クラス間に継承関係がある場合は、子クラスから記述しなければならない
+
+👎
+
+```java showLineNumbers copy {3-5}
+try {
+  ...
+} catch(Exception e1) {                       // 【👎】 親クラスから記述している
+  ...
+} catch (ArrayIndexOutOfBoundsException e2) { // そのため、この行に到達できない
+  ...
+}
+```
+
+👍
+
+```java showLineNumbers copy {3-5}
+try {
+  ...
+} catch (ArrayIndexOutOfBoundsException e1) { // 【👍】 子クラスから記述
+  ...
+} catch (Exception e2) {
+  ...
+}
+```
+
+## マルチキャッチ
+
+特徴
+
+- 複数の例外をまとめてキャッチする記述
+- 継承関係のある例外クラス同士は列記できない
+
+👎
+
+```java showLineNumbers copy {7}
+public class Main {
+  public static void main(String[] args) {
+    try {
+      FileReader fr  = new FileReader("foo.md");
+
+      // 【👎】 'IOException' と 'FileNotFoundException' は継承関係
+    } catch (IOException | FileNotFoundException | ArithmeticException e) {
+      System.out.println("Error Message: " + e.getMessage());
+    }
+  }
+}
+```
+
+👍
+
+```java showLineNumbers copy {5}
+public class Main {
+  public static void main(String[] args) {
+    try {
+      FileReader fr  = new FileReader("foo.md");
+    } catch (FileNotFoundException | ArithmeticException e) { // 【👍】 継承関係ではない
+      System.out.println("Error Message: " + e.getMessage());
+    }
+  }
+}
+```
+
+## throws と オーバーライド
+
+スーパークラスのメソッドに `throws xxx` と付いている場合、オーバーライドをする側でも `throws` のハンドリングを行う必要があります。
+
+特徴
+
+- throws を記述しなくてもいい
+- サブクラスの指定はできる
+- 同一の例外クラスの指定はできる
+- スーパークラスの指定はできない
+- 継承関係にない例外クラスの指定はできない
+
+```java showLineNumbers copy
+class Super {
+  protected void method() throws IOException {}
+}
+class Sub extends Super {
+  // 【👍】 throwsを記述しなくても問題ない
+  protected void method() {}
+
+  // 【👍】 FileNotFoundException は IOException のサブクラス
+  protected void method() throws FileNotFoundException {}
+
+  // 【👍】 同一の例外クラス
+  protected void method() throws IOException {}
+
+  // 【👍】 RuntimeException および RuntimeException のサブクラスはスーパークラスのメソッドに関係なくスローできる
+  protected void method() throws RuntimeException {}
+
+  // 【👎】 Exception は IOException のスーパークラス
+  protected void method() throws Exception {}
+
+  // 【👎】 ClassNotFoundException は IOException と継承関係にない
+  protected void method() throws ClassNotFoundException {}
+}
+```
+
+## throws を付ける基準
+
+throws を付ける基準
+
+- `例外をスロー`するメソッド
+- 例外をスローするメソッドを`呼び出しているメソッド`
+
+```java showLineNumbers copy
+public class Main {
+  public static void main(String[] args) { // 3
+    x();
+  }
+  static void x() {                        // 2
+    y();
+  }
+  static void y() {                        // 1
+    throw new Exception();
+  }
+}
+```
+
+解説
+
+1. y() は例外をスローするメソッドのなので、`throws Exception` を付けなければならない
+2. x() は例外をスローするメソッドを呼び出しているメソッドなので、`throws Exception` を付けなければならない
+3. 2 と同じ

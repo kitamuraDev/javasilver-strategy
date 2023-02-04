@@ -26,6 +26,7 @@ const config: DocsThemeConfig = {
   // todo: 適宜カスタマイズ
   sidebar: {
     toggleButton: true,
+    defaultMenuCollapseLevel: 1
   },
 
   editLink: {

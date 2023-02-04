@@ -1,0 +1,75 @@
+---
+title: "module-system"
+description: "module-system"
+---
+
+# 7 章
+
+## javac コマンド
+
+> 説明：Java プログラムをコンパイルするコマンド。`.java` をコンパイルすることで、JVM が解釈できる `.class` ファイルが生成される
+
+特徴
+
+- `.java` -> `.class` にコンパイル
+- （`javac -d` で）クラスファイルの生成場所を指定
+- （`javac -d` で）コンパイル対象がパッケージ化されている場合、そのパッケージ名に対応したディレクトリも一緒に生成
+
+構文
+
+> javac [ コンパイル対象のファイル.java ] <br />
+> javac -d [ クラスファイルの生成場所 ] [ コンパイル対象のファイル.java ]
+
+## java コマンド
+
+> 説明：クラスファイル（`.class`）を元に java プログラムを実行するコマンド
+
+構文
+
+> java [ クラスファイル名 ]
+
+## --module-path --module
+
+> 説明：モジュールの解決・実行を行うための java コマンドオプション
+
+構文
+
+> java --module-path [ モジュールの格納場所 ] --module [ モジュール名/main クラスの完全修飾名 ]
+
+サンプルコマンド
+
+```sh copy
+$ java --module-path . --module com.se.sample/com.se.sample.main.Main // 基本形
+$ java -p . -m com.se.sample/com.se.sample.main.Main                  // 短縮形
+```
+
+## --describe-module
+
+> 対象モジュールの情報を参照
+
+## --show-module-resolution
+
+> モジュール解決の様子を出力
+
+## jdeps コマンド
+
+> 説明：モジュールの依存関係を調べるコマンド。依存するモジュール名や必要とするパッケージ名を表示。依存関係を調べたい `classファイル` や `JARファイル` を指定する
+
+サンプルコマンド
+
+```sh copy
+$ jdeps com/se/sample/main/Main.class
+```
+
+## 無名モジュール
+
+- `クラスパス`上に存在し、モジュール名を持たない
+- すべてのパッケージを exports する
+- モジュールパス上のすべてのモジュールを requires する
+- `module-info.java`を持たない
+
+## 自動モジュール
+
+- `モジュールパス`上に存在し、モジュール名を持たない
+- すべてのパッケージを exports する
+- モジュールパス上のすべてのモジュールを requires する

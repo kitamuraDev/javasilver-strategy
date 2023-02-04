@@ -2,5 +2,9 @@
   "index": "はじめに",
   "license": "ライセンス",
   "feedback": "内容を訂正する",
-  "sample-code": "サンプルコード"
+  "---": {
+    "type": "separator"
+  },
+  "sample-code": "サンプルコード",
+  "mock-examination": "模擬試験"
 }

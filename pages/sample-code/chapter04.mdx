@@ -32,10 +32,10 @@ public class Main {
   public int instanceValue = 100;
 
   static int getInstanceValue_1() {
-    return instanceValue;           // 【👎】 インスタンス化しなければならない
+    return instanceValue;            // 【👎】 インスタンス化しなければならない
   }
-  static int getInstanceValue_2() { // 【👍】
-    return new Main().instanceValue;
+  static int getInstanceValue_2() {
+    return new Main().instanceValue; // 【👍】
   }
   public static void main(String[] args) {
     System.out.println(getInstanceValue_2());            // 100
@@ -81,7 +81,7 @@ public class Main {
   static String s;
   Main(String s) { this.s = s; }
 
-  static String getS() { return this.s; } // 【👎】 staticメソッド内ではthisは使用できない
+  static String getS() { return this.s; } // 【👎】 staticメソッド内では this は使用できない
   String getS() { return this.s; }        // 【👍】
   public static void main(String[] args) {
     System.out.println(new Main("foo").getS());

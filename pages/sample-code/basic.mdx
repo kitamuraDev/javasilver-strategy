@@ -15,7 +15,7 @@ description: "basic"
 - 引数リストとは、引数の `並び順`, `データ型`, `数` のこと
 - `戻り値`, `引数の変数名`, `アクセス修飾子` は引数リストには含まれないため注意が必要
 
-```java
+```java showLineNumbers copy
 void method() {}
 void method(int number) {}
 void method(int number, String string) {}
@@ -26,7 +26,7 @@ void method(String string, int number) {}
 
 `完全一致` > `暗黙の型変換` > [^1]`Boxing` > `可変長引数`<br />
 
-```java
+```java showLineNumbers copy
 public class Main {
     public void method(int a) { System.out.println("method(int a)"); }         // 1（完全一致）
     public void method(long a) { System.out.println("method(long a)"); }       // 2（暗黙の型変換）

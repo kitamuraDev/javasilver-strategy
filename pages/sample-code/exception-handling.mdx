@@ -51,7 +51,7 @@ public class Main {
     try {
       FileReader fr  = new FileReader("foo.md");
 
-      // 【👎】 'IOException' と 'FileNotFoundException' は継承関係
+    // 【👎】 'IOException' と 'FileNotFoundException' は継承関係
     } catch (IOException | FileNotFoundException | ArithmeticException e) {
       System.out.println("Error Message: " + e.getMessage());
     }

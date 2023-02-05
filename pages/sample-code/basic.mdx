@@ -28,13 +28,13 @@ void method(String string, int number) {}
 
 ```java showLineNumbers copy
 public class Main {
-    public void method(int a) { System.out.println("method(int a)"); }         // 1（完全一致）
-    public void method(long a) { System.out.println("method(long a)"); }       // 2（暗黙の型変換）
-    public void method(Integer a) { System.out.println("method(Integer a)"); } // 3（Boxing）
-    public void method(int... a) { System.out.println("method(int... a)"); }   // 4（可変長引数）
-    public static void main(String[] args) {
-        new Main().method(555); // method(int a)
-    }
+  public void method(int a) { System.out.println("method(int a)"); }         // 1（完全一致）
+  public void method(long a) { System.out.println("method(long a)"); }       // 2（暗黙の型変換）
+  public void method(Integer a) { System.out.println("method(Integer a)"); } // 3（Boxing）
+  public void method(int... a) { System.out.println("method(int... a)"); }   // 4（可変長引数）
+  public static void main(String[] args) {
+    new Main().method(555); // method(int a)
+  }
 }
 ```
 
@@ -56,15 +56,15 @@ public class Main {
 
 ```java showLineNumbers copy {8,10}
 class Super {
-    void methodA() { System.out.println("Super: methodA()"); }
-    static void methodB() { System.out.println("Super: methodB()"); }
+  void methodA() { System.out.println("Super: methodA()"); }
+  static void methodB() { System.out.println("Super: methodB()"); }
 }
 
 class Sub extends Super {
-    void methodA() { System.out.println("Sub: methodA()"); }        // OK
-    static void methodA() { System.out.println("Sub: methodA()"); } // NG（インスタンスメソッドをstaticメソッドで再定義できない）
-    static void methodB() { System.out.println("Sub: methodB()"); } // OK
-    void methodB() { System.out.println("Sub: methodB()"); }        // NG（staticメソッドをインスタンスメソッドで再定義できない）
+  void methodA() { System.out.println("Sub: methodA()"); }        // OK
+  static void methodA() { System.out.println("Sub: methodA()"); } // NG（インスタンスメソッドをstaticメソッドで再定義できない）
+  static void methodB() { System.out.println("Sub: methodB()"); } // OK
+  void methodB() { System.out.println("Sub: methodB()"); }        // NG（staticメソッドをインスタンスメソッドで再定義できない）
 }
 ```
 
@@ -73,10 +73,10 @@ class Super {
     <T> Collection<T> foo(Collection<T> c) { return null; };
 }
 class Sub extends Super {
-    <T> Collection<T> foo(Collection<T> c) { return null; }; // OK
-    <T> List<T> foo(List<T> c) { return null; };             // OK（引数の型が異なるため問題ない）
-    <T> Collection<T> foo(Map c) { return null; };           // OK（引数の型が異なるため問題ない）
-    <T> List<T> foo(Collection<String> c) { return null; };  // NG（型パラメーターは変更できない）
+  <T> Collection<T> foo(Collection<T> c) { return null; }; // OK
+  <T> List<T> foo(List<T> c) { return null; };             // OK（引数の型が異なるため問題ない）
+  <T> Collection<T> foo(Map c) { return null; };           // OK（引数の型が異なるため問題ない）
+  <T> List<T> foo(Collection<String> c) { return null; };  // NG（型パラメーターは変更できない）
 }
 ```
 
@@ -137,20 +137,20 @@ class Sub extends Super {
 
 ```java showLineNumbers copy {2,9-10,14-15}
 public class Main {
-    static { System.out.println("Main static block"); }  // 1
-    public static void main(String[] args) throws Exception {
-        new Sub();
-    }
+  static { System.out.println("Main static block"); }  // 1
+  public static void main(String[] args) throws Exception {
+    new Sub();
+  }
 }
 
 class Super {
-    static { System.out.println("Super static block"); } // 2
-    Super() { System.out.println("Super constructor"); } // 4
+  static { System.out.println("Super static block"); } // 2
+  Super() { System.out.println("Super constructor"); } // 4
 }
 
 class Sub extends Super {
-    static { System.out.println("Sub static block"); }   // 3
-    Sub() { System.out.println("Sub constructor"); }     // 5
+  static { System.out.println("Sub static block"); }   // 3
+  Sub() { System.out.println("Sub constructor"); }     // 5
 }
 ```
 

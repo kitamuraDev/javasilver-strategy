@@ -37,7 +37,7 @@ public class Main {
   static int getInstanceValue_2() { // 【👍】
     return new Main().instanceValue;
   }
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     System.out.println(getInstanceValue_2());            // 100
     System.out.println(new Main().getInstanceValue_2()); // 100（一応、インスタンスからでも呼び出せる）
   }
@@ -51,7 +51,7 @@ static メンバはポリモフィズムの影響を受けません。`参照型
 
 ```java showLineNumbers copy
 public class Main {
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     Super[] obj = { new Super(), new Sub() };
     for(Super o : obj) {
       System.out.println(o.str); // 参照型はSuperだから、Super が出力される
@@ -83,7 +83,7 @@ public class Main {
 
   static String getS() { return this.s; } // 【👎】 staticメソッド内ではthisは使用できない
   String getS() { return this.s; }        // 【👍】
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     System.out.println(new Main("foo").getS());
   }
 }

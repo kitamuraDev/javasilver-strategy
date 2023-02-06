@@ -7,17 +7,17 @@ description: "exception-handling"
 
 ## catch ブロック
 
-特徴
+要点
 
 - catch ブロックは複数定義することができる
-- 例外クラス間に継承関係がある場合は、子クラスから記述しなければならない
+- 例外クラス間に継承関係がある場合は、サブクラスから記述しなければならない
 
 👎
 
 ```java showLineNumbers copy {3-5}
 try {
   ...
-} catch(Exception e1) {                       // 【👎】 親クラスから記述している
+} catch(Exception e1) {                       // 【👎】 スーパークラスから記述している
   ...
 } catch (ArrayIndexOutOfBoundsException e2) { // そのため、この行に到達できない
   ...
@@ -29,7 +29,7 @@ try {
 ```java showLineNumbers copy {3-5}
 try {
   ...
-} catch (ArrayIndexOutOfBoundsException e1) { // 【👍】 子クラスから記述
+} catch (ArrayIndexOutOfBoundsException e1) { // 【👍】 サブクラスから記述
   ...
 } catch (Exception e2) {
   ...
@@ -38,7 +38,7 @@ try {
 
 ## マルチキャッチ
 
-特徴
+要点
 
 - 複数の例外をまとめてキャッチする記述
 - 継承関係のある例外クラス同士は列記できない
@@ -77,7 +77,7 @@ public class Main {
 
 スーパークラスのメソッドに `throws xxx` と付いている場合、オーバーライドをする側でも `throws` のハンドリングを行う必要があります。
 
-特徴
+要点
 
 - throws を記述しなくてもいい
 - サブクラスの指定はできる

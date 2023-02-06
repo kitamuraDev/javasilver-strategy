@@ -123,28 +123,28 @@ abstract class Sub extends Super {} // 2
 
 ```java showLineNumbers copy
 // 【1】 インタフェースのアクセス修飾子は 'public' のみ
-protected interface MyInter {} // 【👎】 protected は指定できない
+protected interface MyInter {} // 【😡】 protected は指定できない
 
 // 【2】 メンバ変数は強制的に 'public static final' になるため '初期化' を行う必要がある
 interface MyInter {
-  int num;                     // 【👎】 初期化を行っていない
+  int num;                     // 【😡】 初期化を行っていない
 }
 
 // 【3】 抽象メソッドには強制的に 'public abstract' が付く
 interface MyInter {
-  protected void method();     // 【👎】 抽象メソッドは 'public' のみしか許可されていない
+  protected void method();     // 【😡】 抽象メソッドは 'public' のみしか許可されていない
 }
 
 // 【4】 デフォルトメソッドのアクセス修飾子は 'public' のみ
 interface MyInter {
-  protected default void method() {}        // 【👎】 指定できるのは public のみ
-  default static void method(int num) {}    // 【👎】 デフォルトメソッドでは static修飾子 は使えない
+  protected default void method() {}        // 【😡】 指定できるのは public のみ
+  default static void method(int num) {}    // 【😡】 デフォルトメソッドでは static修飾子 は使えない
 }
 
 // 【5】 staticメソッドのアクセス修飾子は、指定されていなければ 'public' が付く
 interface MyInter {
-  protected static void method(int num) {}  // 【👎】 protectedは使用できない
-  private static void method(String str) {} // 【👍】 private は使用可能
+  protected static void method(int num) {}  // 【😡】 protectedは使用できない
+  private static void method(String str) {} // 【😊】 private は使用可能
 }
 ```
 
@@ -183,7 +183,7 @@ Arrays.asList() について
 - `固定サイズのリスト`に変換する
 - `上書きは可能`だが、`追加や削除はできない`（もし、追加や削除を行った場合は、実行時エラーが発生する）
 
-👎
+😡
 
 ```java showLineNumbers copy {4-5}
 public class Main {
@@ -197,7 +197,7 @@ public class Main {
 }
 ```
 
-👍
+😊
 
 ```java showLineNumbers copy {4} /new ArrayList<>(Arrays.asList(ary));/
 public class Main {

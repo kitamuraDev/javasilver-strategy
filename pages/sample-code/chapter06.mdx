@@ -12,24 +12,24 @@ description: "exception-handling"
 - catch ブロックは複数定義することができる
 - 例外クラス間に継承関係がある場合は、サブクラスから記述しなければならない
 
-👎
+😡
 
 ```java showLineNumbers copy {3-5}
 try {
   ...
-} catch(Exception e1) {                       // 【👎】 スーパークラスから記述している
+} catch(Exception e1) {                       // 【😡】 スーパークラスから記述している
   ...
 } catch (ArrayIndexOutOfBoundsException e2) { // そのため、この行に到達できない
   ...
 }
 ```
 
-👍
+😊
 
 ```java showLineNumbers copy {3-5}
 try {
   ...
-} catch (ArrayIndexOutOfBoundsException e1) { // 【👍】 サブクラスから記述
+} catch (ArrayIndexOutOfBoundsException e1) { // 【😊】 サブクラスから記述
   ...
 } catch (Exception e2) {
   ...
@@ -43,7 +43,7 @@ try {
 - 複数の例外をまとめてキャッチする記述
 - 継承関係のある例外クラス同士は列記できない
 
-👎
+😡
 
 ```java showLineNumbers copy {7}
 public class Main {
@@ -51,7 +51,7 @@ public class Main {
     try {
       FileReader fr  = new FileReader("foo.md");
 
-    // 【👎】 'IOException' と 'FileNotFoundException' は継承関係
+    // 【😡】 'IOException' と 'FileNotFoundException' は継承関係
     } catch (IOException | FileNotFoundException | ArithmeticException e) {
       System.out.println("Error Message: " + e.getMessage());
     }
@@ -59,14 +59,14 @@ public class Main {
 }
 ```
 
-👍
+😊
 
 ```java showLineNumbers copy {5}
 public class Main {
   public static void main(String[] args) {
     try {
       FileReader fr  = new FileReader("foo.md");
-    } catch (FileNotFoundException | ArithmeticException e) { // 【👍】 継承関係ではない
+    } catch (FileNotFoundException | ArithmeticException e) { // 【😊】 継承関係ではない
       System.out.println("Error Message: " + e.getMessage());
     }
   }
@@ -90,22 +90,22 @@ class Super {
   protected void method() throws IOException {}
 }
 class Sub extends Super {
-  // 【👍】 throwsを記述しなくても問題ない
+  // 【😊】 throwsを記述しなくても問題ない
   protected void method() {}
 
-  // 【👍】 FileNotFoundException は IOException のサブクラス
+  // 【😊】 FileNotFoundException は IOException のサブクラス
   protected void method() throws FileNotFoundException {}
 
-  // 【👍】 同一の例外クラス
+  // 【😊】 同一の例外クラス
   protected void method() throws IOException {}
 
-  // 【👍】 RuntimeException および RuntimeException のサブクラスはスーパークラスのメソッドに関係なくスローできる
+  // 【😊】 RuntimeException および RuntimeException のサブクラスはスーパークラスのメソッドに関係なくスローできる
   protected void method() throws RuntimeException {}
 
-  // 【👎】 Exception は IOException のスーパークラス
+  // 【😡】 Exception は IOException のスーパークラス
   protected void method() throws Exception {}
 
-  // 【👎】 ClassNotFoundException は IOException と継承関係にない
+  // 【😡】 ClassNotFoundException は IOException と継承関係にない
   protected void method() throws ClassNotFoundException {}
 }
 ```

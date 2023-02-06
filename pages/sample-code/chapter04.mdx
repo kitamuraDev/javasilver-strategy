@@ -32,10 +32,10 @@ public class Main {
   public int instanceValue = 100;
 
   static int getInstanceValue_1() {
-    return instanceValue;            // 【👎】 インスタンス化しなければならない
+    return instanceValue;            // 【😡】 インスタンス化しなければならない
   }
   static int getInstanceValue_2() {
-    return new Main().instanceValue; // 【👍】
+    return new Main().instanceValue; // 【😊】
   }
   public static void main(String[] args) {
     System.out.println(getInstanceValue_2());            // 100
@@ -81,8 +81,8 @@ public class Main {
   static String s;
   Main(String s) { this.s = s; }
 
-  static String getS() { return this.s; } // 【👎】 staticメソッド内では this は使用できない
-  String getS() { return this.s; }        // 【👍】
+  static String getS() { return this.s; } // 【😡】 staticメソッド内では this は使用できない
+  String getS() { return this.s; }        // 【😊】
   public static void main(String[] args) {
     System.out.println(new Main("foo").getS());
   }
@@ -93,32 +93,32 @@ public class Main {
 
 要点
 
-- 【👍】`インスタンスメンバ` -> `インスタンスメンバ`
-- 【👍】`static メンバ` -> `static メンバ`
-- 【👍】`インスタンスメンバ` -> `static メンバ`
-- 【👎】`static メンバ` -> `インスタンスメンバ`（インスタンス化しなければならない）
+- 【😊】`インスタンスメンバ` -> `インスタンスメンバ`
+- 【😊】`static メンバ` -> `static メンバ`
+- 【😊】`インスタンスメンバ` -> `static メンバ`
+- 【😡】`static メンバ` -> `インスタンスメンバ`（インスタンス化しなければならない）
 - 「クラス名.メソッド名」形式でのメソッド呼び出し
-  - 【👍】static メンバ
-  - 【👎】インスタンスメンバ（インスタンス化しなければならない）
+  - 【😊】static メンバ
+  - 【😡】インスタンスメンバ（インスタンス化しなければならない）
 
 サンプルコード
 
 ```java showLineNumbers copy
 public class Main {
   static void methodA() {
-    methodB();      // 【👍】 staticメソッド -> staticメソッド
-    Main.methodB(); // 【👍】 staticメソッド -> staticメソッド
-    methodC();      // 【👎】 インスタンス化しなければならない
-    Main.methodD(); // 【👎】 インスタンス化しなければならない
+    methodB();      // 【😊】 staticメソッド -> staticメソッド
+    Main.methodB(); // 【😊】 staticメソッド -> staticメソッド
+    methodC();      // 【😡】 インスタンス化しなければならない
+    Main.methodD(); // 【😡】 インスタンス化しなければならない
   }
 
   static void methodB() {}
 
   void methodC() {
-    methodB();      // 【👍】 インスタンスメソッド -> staticメソッド
-    Main.methodB(); // 【👍】 インスタンスメソッド -> staticメソッド
-    methodD();      // 【👍】 インスタンスメソッド -> インスタンスメソッド
-    Main.methodD(); // 【👎】 無効なメソッド呼び出し（new Main().methodD(); なら👍）
+    methodB();      // 【😊】 インスタンスメソッド -> staticメソッド
+    Main.methodB(); // 【😊】 インスタンスメソッド -> staticメソッド
+    methodD();      // 【😊】 インスタンスメソッド -> インスタンスメソッド
+    Main.methodD(); // 【😡】 無効なメソッド呼び出し（new Main().methodD(); なら😊）
   }
 
   void methodD() {}

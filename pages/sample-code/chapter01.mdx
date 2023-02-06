@@ -16,17 +16,17 @@ main() メソッドでコンパイルエラーになるか、実行時エラー�
 コンパイルエラー
 
 ```java showLineNumbers copy
-public static void main(string[] args) {} // 【👎】 string[] -> 【👍】 String[]
-public static main(String[] args) {}      // 【👎】 戻り値忘れ
-public static void main(String[] ) {}     // 【👎】 引数忘れ
+public static void main(string[] args) {} // 【😡】 string[] -> 【😊】 String[]
+public static main(String[] args) {}      // 【😡】 戻り値忘れ
+public static void main(String[] ) {}     // 【😡】 引数忘れ
 ```
 
 実行時エラー
 
 ```java showLineNumbers copy
-public static void main(String args) {}   // 【👎】 String -> 【👍】 String[]
-public static void Main(String[] args) {} // 【👎】 Main -> 【👍】 main
-public void main(String[] args) {}        // 【👎】 static忘れ
+public static void main(String args) {}   // 【😡】 String -> 【😊】 String[]
+public static void Main(String[] args) {} // 【😡】 Main -> 【😊】 main
+public void main(String[] args) {}        // 【😡】 static忘れ
 ```
 
 以下の書き方は問題なくコンパイル・実行が通るので注意
@@ -39,8 +39,8 @@ public static void main(String args[]) {} // [] が args の後置
 ## 型変換の間違いやすいポイント
 
 ```java showLineNumbers copy
-double d1 = 10; // 【👍】 基本データ型同士は、暗黙の型変換ができる
-Double d2 = 10; // 【👎】 Boxingの関係ではない場合、暗黙の型変換はできない
+double d1 = 10; // 【😊】 基本データ型同士は、暗黙の型変換ができる
+Double d2 = 10; // 【😡】 Boxingの関係ではない場合、暗黙の型変換はできない
 ```
 
 \*[Boxing とは](/sample-code/basic#user-content-fn-1)
@@ -93,9 +93,9 @@ int x7 = 0_x48;
 サンプルコード
 
 ```java showLineNumbers copy
-var a1 = new int[]{ 1, 2, 3 }; // 【👍】
-var a2 = new int[1];           // 【👍】
-var a3 = new int[];            // 【👎】 要素数が無い
-var a4 = { 1, 2, 3 };          // 【👎】 型の明示が無い
-var final a5 = 10;             // 【👎】 final と var の位置が逆
+var a1 = new int[]{ 1, 2, 3 }; // 【😊】
+var a2 = new int[1];           // 【😊】
+var a3 = new int[];            // 【😡】 要素数が無い
+var a4 = { 1, 2, 3 };          // 【😡】 型の明示が無い
+var final a5 = 10;             // 【😡】 final と var の位置が逆
 ```

@@ -59,7 +59,7 @@ int i1 = 1;
 int[] i2 = {2};
 final int i3 = 3;
 switch(i2[0]) {
-  case i1: // 【👎】 caseは定数でなければならない
+  case i1: // 【😡】 caseは定数でなければならない
     break;
   case 2:
     break;
@@ -72,7 +72,7 @@ switch(i2[0]) {
 
 ```java showLineNumbers copy {2}
 String str = null;
-switch(str) { // 【👎】 実行時に NullPointerException 発生
+switch(str) { // 【😡】 実行時に NullPointerException 発生
   case "foo":
     break;
   case "bar":

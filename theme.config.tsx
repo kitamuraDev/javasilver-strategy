@@ -82,10 +82,9 @@ const config: DocsThemeConfig = {
         />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="/og.jpg" />
-        {/* todo: デプロイ後に対応 */}
-        {/* <meta name="twitter:site:domain" content="nextra.site" />
-        <meta name="twitter:url" content="https://nextra.site" />
-        <meta property="og:url" content={`https://my-app.com${asPath}`} /> */}
+        <meta name="twitter:site:domain" content="javasilver-strategy.vercel.app" />
+        <meta name="twitter:url" content="https://javasilver-strategy.vercel.app/" />
+        <meta property="og:url" content={`https://javasilver-strategy.vercel.app/${asPath}`} />
       </>
     );
   },

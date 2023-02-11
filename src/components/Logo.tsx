@@ -3,7 +3,7 @@ import React from "react";
 const logo = (
   <span>
     <svg
-      height="40"
+      height="30"
       viewBox="0 0 713 120"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -38,53 +38,31 @@ const config: DocsThemeConfig = {
   },
 
   head: () => {
-    const { asPath } = useRouter();
-    const { frontMatter } = useConfig();
     return (
       <>
-        <meta name="description" content="JavaSilver Strategy document site" />
-        <meta name="og:description" content="JavaSilver Strategy document site" />
-        <meta
-          name="og:title"
-          content={
-            frontMatter.title + " - JavaSilver Strategy" ||
-            "JavaSilver Strategy"
-          }
-        />
-        <meta
-          property="og:title"
-          content={
-            frontMatter.title + " - JavaSilver Strategy" ||
-            "JavaSilver Strategy"
-          }
-        />
-        <meta
-          property="og:description"
-          content={
-            frontMatter.description || "JavaSilver Strategy document site"
-          }
-        />
-        <meta name="og:image" content="/og.jpg" />
-        <meta name="apple-mobile-web-app-title" content="JavaSilver Strategy" />
+        {/* Primary Meta Tags */}
+        <meta name="title" content="JavaSilver Strategy - Java Silver 試験対策サンプルコード集" />
+        <meta name="description" content="JavaSilver Strategy は Java言語の認定資格試験である Java Silver の試験対策サンプルコード集です" />
+
+        {/* Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://javasilver-strategy.vercel.app/" />
+        <meta property="og:title" content="JavaSilver Strategy - Java Silver 試験対策サンプルコード集" />
+        <meta property="og:description" content="JavaSilver Strategy は Java言語の認定資格試験である Java Silver の試験対策サンプルコード集です" />
+        <meta property="og:image" content="/og.jpg" />
+
+        {/* Twitter */}
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content="https://javasilver-strategy.vercel.app/" />
+        <meta property="twitter:title" content="JavaSilver Strategy - Java Silver 試験対策サンプルコード集" />
+        <meta property="twitter:description" content="JavaSilver Strategy は Java言語の認定資格試験である Java Silver の試験対策サンプルコード集です" />
+        <meta property="twitter:image" content="/og.jpg" />
+
+        {/* favicon */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon.png" type="image/png" />
-        <link
-          rel="icon"
-          href="/favicon-dark.svg"
-          type="image/svg+xml"
-          media="(prefers-color-scheme: dark)"
-        />
-        <link
-          rel="icon"
-          href="/favicon-dark.png"
-          type="image/png"
-          media="(prefers-color-scheme: dark)"
-        />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="/og.jpg" />
-        <meta name="twitter:site:domain" content="javasilver-strategy.vercel.app" />
-        <meta name="twitter:url" content="https://javasilver-strategy.vercel.app/" />
-        <meta property="og:url" content={`https://javasilver-strategy.vercel.app/${asPath}`} />
+        <link rel="icon" href="/favicon-dark.svg" type="image/svg+xml" media="(prefers-color-scheme: dark)" />
+        <link rel="icon" href="/favicon-dark.png" type="image/png" media="(prefers-color-scheme: dark)" />
       </>
     );
   },

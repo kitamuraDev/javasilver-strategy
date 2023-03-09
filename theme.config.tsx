@@ -49,14 +49,14 @@ const config: DocsThemeConfig = {
         <meta property="og:url" content="https://javasilver-strategy.vercel.app/" />
         <meta property="og:title" content="JavaSilver Strategy - Java Silver 試験対策サンプルコード集" />
         <meta property="og:description" content="JavaSilver Strategy は Java言語の認定資格試験である Java Silver の試験対策サンプルコード集です" />
-        <meta property="og:image" content="/og.jpg" />
+        <meta property="og:image" content="https://raw.githubusercontent.com/kitamuraDev/javasilver-strategy/main/public/og.jpg" />
 
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://javasilver-strategy.vercel.app/" />
         <meta property="twitter:title" content="JavaSilver Strategy - Java Silver 試験対策サンプルコード集" />
         <meta property="twitter:description" content="JavaSilver Strategy は Java言語の認定資格試験である Java Silver の試験対策サンプルコード集です" />
-        <meta property="twitter:image" content="/og.jpg" />
+        <meta property="twitter:image" content="https://raw.githubusercontent.com/kitamuraDev/javasilver-strategy/main/public/og.jpg" />
 
         {/* favicon */}
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
